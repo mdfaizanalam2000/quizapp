@@ -56,29 +56,33 @@ export default function Quiz() {
     const [score, setCurrentScore] = useState(0);
     const [correctAns, setCorrectAns] = useState(0);
     const [showResult, setShowResult] = useState(false);
-    const [clicked, setClicked] = useState(false);
+    const [selectedOption, setSelectedOption] = useState(null)
 
-    const handletoNext = () => {
-        setClicked(false);
+    const reset = () => {
+        setCurrentQuestion(0);
+        setCurrentScore(0);
+        setCorrectAns(0);
+        setShowResult(false);
+        setSelectedOption(null);
+    }
+
+    const checkScore = (selectedOption) => {
+        if (questionBank[currentQuestion].answerOptions[selectedOption].isCorrect) {
+            setCurrentScore(score + 5);
+            setCorrectAns(correctAns + 1);
+        }
+        setSelectedOption(null)
         const nextQuestion = currentQuestion + 1;
         if (nextQuestion < questionBank.length)
             setCurrentQuestion(nextQuestion);
         else
             setShowResult(true);
     }
-
-    const checkScore = (isCorrect) => {
-        if (isCorrect) {
-            setCurrentScore(score + 5);
-            setCorrectAns(correctAns + 1);
-        }
-        setClicked(true);
-    }
     return (
         <div className='app'>
             {showResult ? <QuizResult score={score} correctAns={correctAns} questionBank={questionBank} /> : <>
                 <div className="question-section">
-                    <h3>Your score:{score}</h3>
+                    <h3>Demo Quiz for Testing</h3>
                     <div className="question-count">
                         <span>Question no {currentQuestion + 1} of {questionBank.length}</span>
                     </div>
@@ -88,11 +92,11 @@ export default function Quiz() {
                 </div>
                 <div className="answer-section">
                     {questionBank[currentQuestion].answerOptions.map((ans, i) => {
-                        return <button disabled={clicked} key={i} onClick={() => checkScore(ans.isCorrect)}>{ans.answerText}</button>
+                        return <button className={i === selectedOption ? "selected" : ""} key={i} onClick={() => setSelectedOption(i)}>{ans.answerText}</button>
                     })}
                     <div className="actions">
-                        <button>Quit</button>
-                        <button disabled={!clicked} onClick={handletoNext}>Next</button>
+                        <button onClick={reset}>Quit</button>
+                        <button disabled={selectedOption == null ? true : false} onClick={() => checkScore(selectedOption)}>Next</button>
                     </div>
                 </div>
             </>}
