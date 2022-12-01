@@ -62,7 +62,7 @@ button {
   cursor: pointer;
 }
 
-.correct {
+.selected {
   background-color: #2f922f;
 }
 
