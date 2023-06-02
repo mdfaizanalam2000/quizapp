@@ -14,7 +14,7 @@ export default function Quiz(props) {
     };
 
     const fetchQuestions = async () => {
-        const response = await fetch("https://quiz-backend-8bu6.onrender.com/questions", {
+        const response = await fetch("https://nice-pink-panda-belt.cyclic.app/questions", {
             headers: {
                 "Content-Type": "application/json",
                 "category": props.category
